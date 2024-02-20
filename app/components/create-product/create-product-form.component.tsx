@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { TextField, Input, Button, Typography, Container, MenuItem, FormControl, Select, InputLabel, Chip, OutlinedInput, Checkbox, ListItemText } from "@mui/material";
 import { ProductRepository } from "@/repository/ProductRepository/ProductRepository";
 import { CreateProductCommand } from "@/repository/Dtos/product/CreateProductCommand";
+import { ProductCategoryRepository } from "@/repository/ProductCategoryRepository/ProductCategoryRepository";
+import { ProductBrandRepository } from "@/repository/ProductBrandRepository/ProductBrandRepository";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -20,6 +24,8 @@ export const CreateProductForm = () => {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [productCode, setProductCode] = useState("");
+	const [categoryOptions, setCategoryOptions] = useState<any>([]);
+	const [brandOptions, setBrandOptions] = useState<any>([]);
 	const [categoryIds, setCategoryIds] = useState<string[]>([]);
 	const [brandId, setBrandId] = useState("");
 	const [price, setPrice] = useState(0);
@@ -65,6 +71,21 @@ export const CreateProductForm = () => {
 		}
 	};
 
+	const loadProductArtifacts = async () => {
+		const categoryRepo = new ProductCategoryRepository();
+		const brandRepo = new ProductBrandRepository();
+
+		let promises = [categoryRepo.FetchAllProductCategories(), brandRepo.FetchAllProductBrands()];
+
+		let [categoryResponse, brandResponse] = await Promise.all(promises);
+		console.log(categoryResponse.data);
+		setCategoryOptions(categoryResponse.data.data);
+		setBrandOptions(categoryResponse.data.data);
+	};
+
+	useEffect(() => {
+		loadProductArtifacts();
+	}, []);
 	return (
 		<Container maxWidth="sm">
 			<Typography variant="h4" gutterBottom>
@@ -75,12 +96,12 @@ export const CreateProductForm = () => {
 				<TextField label="Description" value={description} onChange={(e) => setDescription(e.target.value)} fullWidth multiline margin="normal" />
 				<TextField label="Product Code" value={productCode} onChange={(e) => setProductCode(e.target.value)} fullWidth margin="normal" />
 				<FormControl sx={{ m: 1, width: 300 }}>
-					<InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+					<InputLabel id="demo-multiple-checkbox-label">Categories</InputLabel>
 					<Select labelId="demo-multiple-checkbox-label" id="demo-multiple-checkbox" multiple value={[]} onChange={handleCategoriesChange} input={<OutlinedInput label="Tag" />} renderValue={(selected: any) => selected.join(", ")} MenuProps={MenuProps}>
-						{names.map((name) => (
-							<MenuItem key={name} value={name}>
-								<Checkbox checked={categoryIds.indexOf(name) > -1} />
-								<ListItemText primary={name} />
+						{categoryOptions.map((category: any) => (
+							<MenuItem key={category.ItemId} value={category.ItemId}>
+								<Checkbox checked={categoryIds.indexOf(category.ItemId) > -1} />
+								<ListItemText primary={category.title} />
 							</MenuItem>
 						))}
 					</Select>

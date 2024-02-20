@@ -43,14 +43,14 @@ export default function ProductHome() {
 			try {
 				let res = await productRepo.getAllProducts(filter);
 
-				console.log(res);
+				setProducts(res.data.data);
 			} catch (ex) {}
 		}
 
 		loadData();
-	});
+	}, []);
 	let mappedProductCards = products.map((product) => {
-		return <ProductCard product={product} key={product.ItemId} />;
+		return <ProductCard product={product} key={product.itemId} />;
 	});
 	return (
 		<main className="p-24">

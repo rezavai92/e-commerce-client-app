@@ -6,11 +6,11 @@ import { useState, useEffect } from "react";
 export function ProductCard(x: { product: Product }) {
 	const [id, setId] = useState("75045f66-733b-4bbc-9721-8b975dfa8fe4");
 
-	const { Description, ItemId, Title } = x.product;
+	const { description, title } = x.product;
 	return (
 		<div>
-			<div>{Title}</div>
-			<div>{Description}</div>
+			<div>{title}</div>
+			<div>{description}</div>
 		</div>
 	);
 }
