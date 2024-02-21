@@ -1,6 +1,6 @@
 "use client";
-import { ProductRepository } from "@/repository/ProductRepository/ProductRepository";
-import { Product } from "@/repository/models/Product";
+
+import { Product } from "@/domain/models/Product";
 import { useState, useEffect } from "react";
 
 export function ProductCard(x: { product: Product }) {

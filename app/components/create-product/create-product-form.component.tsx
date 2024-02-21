@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { TextField, Input, Button, Typography, Container, MenuItem, FormControl, Select, InputLabel, Chip, OutlinedInput, Checkbox, ListItemText } from "@mui/material";
-import { ProductRepository } from "@/repository/ProductRepository/ProductRepository";
-import { CreateProductCommand } from "@/repository/Dtos/product/CreateProductCommand";
-import { ProductCategoryRepository } from "@/repository/ProductCategoryRepository/ProductCategoryRepository";
-import { ProductBrandRepository } from "@/repository/ProductBrandRepository/ProductBrandRepository";
+import { CreateProductCommand } from "@/domain/Dtos/product/CreateProductCommand";
+import { ProductBrandRepository } from "@/infrastructure/repositories/ProductBrandRepository/ProductBrandRepository";
+import { ProductCategoryRepository } from "@/infrastructure/repositories/ProductCategoryRepository/ProductCategoryRepository";
+import { ProductRepository } from "@/infrastructure/repositories/ProductRepository/ProductRepository";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

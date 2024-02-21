@@ -1,7 +1,7 @@
+import { CreateProductCommand } from "@/domain/Dtos/product/CreateProductCommand";
+import { GetAllProductsDto } from "@/domain/Dtos/product/GetAllProductQuery";
+import { IProductRepository } from "@/domain/interfaces/IProductRepository";
 import axios from "axios";
-import { IProductRepository } from "../interfaces/IProductRepository";
-import { GetAllProductsDto } from "../Dtos/product/GetAllProductQuery";
-import { CreateProductCommand } from "../Dtos/product/CreateProductCommand";
 
 export class ProductRepository implements IProductRepository {
 	/**

@@ -1,12 +1,13 @@
 "use client";
-import { Product } from "@/repository/models/Product";
+
 import { ProductCard } from "../components/product-card/product-card.component";
 import { Fragment, useEffect, useState } from "react";
-import { ProductRepository } from "@/repository/ProductRepository/ProductRepository";
-import { IProduct } from "@/repository/interfaces/IProduct.interface";
-import { GetAllProductsDto } from "@/repository/Dtos/product/GetAllProductQuery";
+
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { CreateProductForm } from "../components/create-product/create-product-form.component";
+import { Product } from "@/domain/models/Product";
+import { GetAllProductsDto } from "@/domain/Dtos/product/GetAllProductQuery";
+import { ProductRepository } from "@/infrastructure/repositories/ProductRepository/ProductRepository";
 export default function ProductHome() {
 	const [products, setProducts] = useState<Product[]>([]);
 
