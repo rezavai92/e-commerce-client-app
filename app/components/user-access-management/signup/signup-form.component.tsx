@@ -4,7 +4,7 @@ import { TextField, Grid, Button, createStyles, useTheme } from "@mui/material";
 
 import { IdentityRepository } from "@/infrastructure/repositories/IdentityRepository/IdentityRepository";
 import { RegisterUserCommand } from "@/domain/Dtos/identity/register-user-command";
-import PrimaryButton from "@/core/components/primary-button.component";
+import PrimaryButton from "@/app/core/components/primary-button.component";
 
 const SignUpForm = () => {
 	const [formData, setFormData] = useState({
@@ -41,6 +41,12 @@ const SignUpForm = () => {
 		<form className="w-2/3">
 			<div className="font-bold text-2xl mb-4">Sign up</div>
 			<Grid container spacing={2}>
+				<Grid item xs={12} sm={6}>
+					<TextField fullWidth label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} variant="outlined" />
+				</Grid>
+				<Grid item xs={12} sm={6}>
+					<TextField fullWidth label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} variant="outlined" />
+				</Grid>
 				<Grid item xs={12}>
 					<TextField fullWidth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} variant="outlined" />
 				</Grid>
@@ -50,12 +56,7 @@ const SignUpForm = () => {
 				<Grid item xs={12}>
 					<TextField fullWidth label="Confirm Password" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} variant="outlined" />
 				</Grid>
-				<Grid item xs={12} sm={6}>
-					<TextField fullWidth label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} variant="outlined" />
-				</Grid>
-				<Grid item xs={12} sm={6}>
-					<TextField fullWidth label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} variant="outlined" />
-				</Grid>
+
 				<Grid item xs={12}>
 					<PrimaryButton config={{ text: "Sign Up", onClick: handleSubmit }} />
 				</Grid>

@@ -3,6 +3,8 @@ import { GetAllProductsDto } from "@/domain/Dtos/product/GetAllProductQuery";
 import { IProductRepository } from "@/domain/interfaces/IProductRepository";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export class ProductRepository implements IProductRepository {
 	/**
 	 *

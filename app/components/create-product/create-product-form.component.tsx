@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { TextField, Input, Button, Typography, Container, MenuItem, FormControl, Select, InputLabel, Chip, OutlinedInput, Checkbox, ListItemText } from "@mui/material";
 import { CreateProductCommand } from "@/domain/Dtos/product/CreateProductCommand";

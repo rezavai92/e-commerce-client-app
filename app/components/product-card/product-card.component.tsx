@@ -1,5 +1,4 @@
 "use client";
-
 import { Product } from "@/domain/models/Product";
 import { useState, useEffect } from "react";
 

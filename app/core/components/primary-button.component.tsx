@@ -9,7 +9,7 @@ type PrimaryButtonProps = {
 const PrimaryButton: FC<PrimaryButtonProps> = ({ config }) => {
 	return (
 		<>
-			<Button className={`w-24 text-white bg-[#1976d2] hover:bg-[#1976d2]`} color="primary" onClick={config.onClick}>
+			<Button className={`w-44 text-white bg-[#1976d2] hover:bg-[#1976d2]`} color="primary" onClick={config.onClick}>
 				{config.text}
 			</Button>
 		</>

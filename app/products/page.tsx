@@ -1,5 +1,4 @@
 "use client";
-
 import { ProductCard } from "../components/product-card/product-card.component";
 import { Fragment, useEffect, useState } from "react";
 
