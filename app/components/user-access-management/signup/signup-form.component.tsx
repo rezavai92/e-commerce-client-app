@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { TextField, Grid, Button, createStyles } from "@mui/material";
+import { TextField, Grid, Button, createStyles, useTheme } from "@mui/material";
 
 import { IdentityRepository } from "@/infrastructure/repositories/IdentityRepository/IdentityRepository";
 import { RegisterUserCommand } from "@/domain/Dtos/identity/register-user-command";
+import PrimaryButton from "@/core/components/primary-button.component";
 
 const SignUpForm = () => {
 	const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const SignUpForm = () => {
 		lastName: "",
 	});
 
+	const theme = useTheme();
+
 	const handleChange = (e: any) => {
 		const { name, value } = e.target;
 		setFormData({
@@ -22,7 +25,7 @@ const SignUpForm = () => {
 		});
 	};
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
 		// Handle form submission here
 		console.log(formData);
@@ -54,9 +57,7 @@ const SignUpForm = () => {
 					<TextField fullWidth label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} variant="outlined" />
 				</Grid>
 				<Grid item xs={12}>
-					<Button onClick={handleSubmit} className="w-24 text-white bg-[#2196f3] hover:bg-[#2196f3]" color="primary">
-						Sign Up
-					</Button>
+					<PrimaryButton config={{ text: "Sign Up", onClick: handleSubmit }} />
 				</Grid>
 			</Grid>
 		</form>
