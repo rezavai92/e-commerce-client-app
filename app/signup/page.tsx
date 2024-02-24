@@ -4,7 +4,7 @@ import SignUpForm from "../components/user-access-management/signup/signup-form.
 
 function SignupPage() {
 	return (
-		<div>
+		<div className="mt-12 container flex justify-center items-start">
 			<SignUpForm></SignUpForm>
 		</div>
 	);

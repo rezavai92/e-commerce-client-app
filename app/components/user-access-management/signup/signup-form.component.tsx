@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
-import { TextField, Button, Grid } from "@mui/material";
+import { TextField, Grid, Button, createStyles } from "@mui/material";
+
 import { IdentityRepository } from "@/infrastructure/repositories/IdentityRepository/IdentityRepository";
 import { RegisterUserCommand } from "@/domain/Dtos/identity/register-user-command";
 
@@ -33,7 +35,8 @@ const SignUpForm = () => {
 	};
 
 	return (
-		<form style={{ width: "75%" }} onSubmit={handleSubmit}>
+		<form className="w-2/3">
+			<div className="font-bold text-2xl mb-4">Sign up</div>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<TextField fullWidth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} variant="outlined" />
@@ -51,7 +54,7 @@ const SignUpForm = () => {
 					<TextField fullWidth label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} variant="outlined" />
 				</Grid>
 				<Grid item xs={12}>
-					<Button type="submit" variant="contained" color="primary">
+					<Button onClick={handleSubmit} className="w-24 text-white bg-[#2196f3] hover:bg-[#2196f3]" color="primary">
 						Sign Up
 					</Button>
 				</Grid>
