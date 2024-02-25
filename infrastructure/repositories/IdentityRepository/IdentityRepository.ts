@@ -16,7 +16,7 @@ export class IdentityRepository implements IIdentityRepository {
 			afterLogin(loginResponse);
 		}
 
-		return res.data.isValid;
+		return res.data;
 	}
 
 	async registerUserAsync(command: RegisterUserCommand) {

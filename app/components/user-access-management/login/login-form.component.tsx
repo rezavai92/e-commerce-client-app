@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { TextField, Grid, Button, createStyles, useTheme } from "@mui/material";
 
 import { IdentityRepository } from "@/infrastructure/repositories/IdentityRepository/IdentityRepository";
@@ -8,12 +8,17 @@ import { RegisterUserCommand } from "@/domain/Dtos/identity/register-user-comman
 import { LoginUserCommand } from "@/domain/Dtos/identity/login-user-command";
 import PrimaryButton from "@/app/core/components/primary-button.component";
 import { redirect } from "next/navigation";
-import { setCurrentUser } from "@/app/core/services/uam-service";
+
 import { AppUser } from "@/domain/models/AppUser";
 import { useRouter } from "next/navigation";
+import { authContext } from "@/app/core/contexts/AuthContextProvider";
+import { LoginResponseDto } from "@/domain/Dtos/identity/loginResponse";
 
 const LoginForm = () => {
 	const router = useRouter();
+
+	const { updateCurrentUser, currentUser } = useContext(authContext);
+
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -31,8 +36,19 @@ const LoginForm = () => {
 
 		const identityRepo = new IdentityRepository();
 		const command = new LoginUserCommand(formData.email, formData.password);
-		var valid = await identityRepo.loginUserAsync(command);
-		if (valid) router.push("/products");
+		var res: any = await identityRepo.loginUserAsync(command);
+		if (res.isValid) {
+			const data: LoginResponseDto = res.data;
+
+			const appUser = new AppUser(data.email, data.displayName, data.profileImageUrl);
+
+			console.log("update current user", updateCurrentUser);
+			if (updateCurrentUser) {
+				updateCurrentUser(appUser);
+			}
+
+			router.push("/products");
+		}
 	};
 
 	return (

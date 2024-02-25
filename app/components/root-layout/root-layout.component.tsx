@@ -20,6 +20,10 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import { StyledEngineProvider } from "@mui/material";
 import { redirect } from "next/dist/server/api-utils";
 import { lightTheme } from "@/app/theme-config";
+import AuthContextProvider, { authContext } from "@/app/core/contexts/AuthContextProvider";
+import { useContext } from "react";
+import { useRouter } from "next/navigation";
+import PrimaryButton from "@/app/core/components/primary-button.component";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -27,6 +31,9 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 export default function RootLayoutComponent() {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+	const router = useRouter();
+
+	const { updateCurrentUser, currentUser } = useContext(authContext);
 
 	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
@@ -41,6 +48,13 @@ export default function RootLayoutComponent() {
 
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
+	};
+
+	const logoutHandler = () => {
+		if (updateCurrentUser) {
+			updateCurrentUser(null);
+			router.push("/");
+		}
 	};
 
 	return (
@@ -70,12 +84,20 @@ export default function RootLayoutComponent() {
 									Products{" "}
 								</Link>
 							</Box>
-							<Box>
-								<Link className="mr-2" href="/signup">
-									Signup{" "}
-								</Link>
-								<Link href="/login">Login </Link>
-							</Box>
+							{!currentUser && (
+								<Box>
+									<Link className="mr-2" href="/signup">
+										Signup{" "}
+									</Link>
+									<Link href="/login">Login </Link>
+								</Box>
+							)}
+
+							{currentUser && (
+								<Box>
+									<PrimaryButton config={{ onClick: logoutHandler, text: "Log Out" }}></PrimaryButton>
+								</Box>
+							)}
 						</Toolbar>
 					</Container>
 				</AppBar>
