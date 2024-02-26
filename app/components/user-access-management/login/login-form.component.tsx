@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TextField, Grid, Button, createStyles, useTheme } from "@mui/material";
 
 import { IdentityRepository } from "@/infrastructure/repositories/IdentityRepository/IdentityRepository";
@@ -13,6 +13,7 @@ import { AppUser } from "@/domain/models/AppUser";
 import { useRouter } from "next/navigation";
 import { authContext } from "@/app/core/contexts/AuthContextProvider";
 import { LoginResponseDto } from "@/domain/Dtos/identity/loginResponse";
+import { getCurrentUserFromLocalStorage } from "@/app/core/services/uam-service";
 
 const LoginForm = () => {
 	const router = useRouter();
@@ -24,10 +25,17 @@ const LoginForm = () => {
 		password: "",
 	});
 
+	useEffect(() => {
+		const storedUser = getCurrentUserFromLocalStorage();
+
+		if (storedUser) {
+			router.push("/products");
+		}
+	}, []);
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
-	console.log("HLW CLINT SIDE");
 
 	const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
@@ -40,7 +48,7 @@ const LoginForm = () => {
 		if (res.isValid) {
 			const data: LoginResponseDto = res.data;
 
-			const appUser = new AppUser(data.email, data.displayName, data.profileImageUrl);
+			const appUser = new AppUser(data.email, data.displayName, data.profileImageUrl, data.roles);
 
 			console.log("update current user", updateCurrentUser);
 			if (updateCurrentUser) {

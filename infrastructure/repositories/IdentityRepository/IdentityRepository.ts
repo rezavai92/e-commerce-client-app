@@ -4,7 +4,9 @@ import { IIdentityRepository } from "@/domain/interfaces/IIdentityRepository";
 
 import axios from "axios";
 import { LoginResponseDto } from "@/domain/Dtos/identity/loginResponse";
-import { afterLogin } from "@/app/core/services/uam-service";
+import { afterLogin, afterSignup } from "@/app/core/services/uam-service";
+import { IGenericResponse } from "@/app/core/interfaces/IAppHttpResponse";
+import { SignupResponseDto } from "@/domain/Dtos/identity/signupResponse";
 
 export class IdentityRepository implements IIdentityRepository {
 	async loginUserAsync(command: LoginUserCommand): Promise<boolean> {
@@ -20,9 +22,14 @@ export class IdentityRepository implements IIdentityRepository {
 	}
 
 	async registerUserAsync(command: RegisterUserCommand) {
-		const res = await axios.post("https://localhost:5000/api/Identity/register", command);
+		const res = await axios.post<IGenericResponse<SignupResponseDto>>("https://localhost:5000/api/Identity/register", command);
 		console.log("res", res);
 
-		return res.data.isValid;
+		if (res.data.isValid) {
+			const signupResponseDto: SignupResponseDto = res.data.data;
+
+			afterSignup(signupResponseDto);
+		}
+		return res.data;
 	}
 }

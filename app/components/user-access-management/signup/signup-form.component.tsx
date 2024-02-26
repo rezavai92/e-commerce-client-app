@@ -1,12 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TextField, Grid, Button, createStyles, useTheme } from "@mui/material";
 
 import { IdentityRepository } from "@/infrastructure/repositories/IdentityRepository/IdentityRepository";
 import { RegisterUserCommand } from "@/domain/Dtos/identity/register-user-command";
 import PrimaryButton from "@/app/core/components/primary-button.component";
+import { afterLogin, afterSignup, getCurrentUserFromLocalStorage } from "@/app/core/services/uam-service";
+import { SignupResponseDto } from "@/domain/Dtos/identity/signupResponse";
+import { AppUser } from "@/domain/models/AppUser";
+import { useRouter } from "next/navigation";
+import { authContext } from "@/app/core/contexts/AuthContextProvider";
 
 const SignUpForm = () => {
+	const router = useRouter();
+
+	const { updateCurrentUser, currentUser } = useContext(authContext);
+
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -15,7 +24,13 @@ const SignUpForm = () => {
 		lastName: "",
 	});
 
-	const theme = useTheme();
+	useEffect(() => {
+		const storedUser = getCurrentUserFromLocalStorage();
+
+		if (storedUser) {
+			router.push("/products");
+		}
+	}, []);
 
 	const handleChange = (e: any) => {
 		const { name, value } = e.target;
@@ -34,7 +49,17 @@ const SignUpForm = () => {
 		const command = new RegisterUserCommand(formData.email, formData.password, formData.firstName, formData.lastName, true);
 		const response = await identityRepo.registerUserAsync(command);
 
-		console.log(response);
+		if (response.isValid) {
+			const data: SignupResponseDto = response.data;
+
+			const appUser = new AppUser(data.email, data.displayName, data.profileImageUrl, data.roles);
+
+			if (updateCurrentUser) {
+				updateCurrentUser(appUser);
+			}
+
+			router.push("/products");
+		}
 	};
 
 	return (

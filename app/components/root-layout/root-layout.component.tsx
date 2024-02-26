@@ -24,6 +24,7 @@ import AuthContextProvider, { authContext } from "@/app/core/contexts/AuthContex
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import PrimaryButton from "@/app/core/components/primary-button.component";
+import { removeToken, setCurrentUserInLocalStorage, setTokenInCookie } from "@/app/core/services/uam-service";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -53,6 +54,8 @@ export default function RootLayoutComponent() {
 	const logoutHandler = () => {
 		if (updateCurrentUser) {
 			updateCurrentUser(null);
+			setCurrentUserInLocalStorage(null);
+			removeToken("token");
 			router.push("/");
 		}
 	};

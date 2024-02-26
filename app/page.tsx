@@ -1,7 +1,6 @@
-"use client";
-
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { getCurrentUserFromLocalStorage } from "./core/services/uam-service";
 
 export default function Home() {
 	redirect("/login");
